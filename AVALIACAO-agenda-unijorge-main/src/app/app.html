@@ -1,0 +1,33 @@
+<div class="layout-app">
+  <!-- Barra de Navegação Superior -->
+  <header class="barra-navegacao">
+    <div class="container-nav">
+      <div class="marca">
+        <span class="icone-marca">🎓</span>
+        <span class="nome-marca">agenda-unijorge</span>
+      </div>
+
+      <nav class="menu-navegacao">
+        <a
+          routerLink="/eventos/novo"
+          routerLinkActive="ativo"
+          class="link-menu"
+        >
+          Novo evento
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Área Principal de Conteúdo -->
+  <main class="conteudo-principal">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Rodapé Institucional -->
+  <footer class="rodape-app">
+    <div class="container-rodape">
+      <p>Agenda Unijorge &bull; Divulgação de palestras, oficinas e semanas acadêmicas</p>
+    </div>
+  </footer>
+</div>

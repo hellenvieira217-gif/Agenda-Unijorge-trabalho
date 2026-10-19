@@ -1,0 +1,174 @@
+<div class="container-cadastro">
+  <header class="cabecalho-pagina">
+    <h1>Cadastro de Evento</h1>
+    <p class="subtitulo">Preencha as informações abaixo para divulgar um novo evento no Agenda Unijorge.</p>
+  </header>
+
+  <section class="card-formulario">
+    <form (ngSubmit)="salvar()" #formEvento="ngForm" novalidate>
+      <!-- 1. Título do evento -->
+      <div class="campo-grupo">
+        <label for="titulo">Título do evento</label>
+        <input
+          type="text"
+          id="titulo"
+          name="titulo"
+          [(ngModel)]="evento.titulo"
+          (blur)="aoSairCampo('titulo')"
+          (ngModelChange)="aoAlterarCampo('titulo')"
+          [class.invalido]="tocado.titulo && !!erros.titulo"
+          placeholder="Ex: Semana de Tecnologia da Informação"
+          autocomplete="off"
+        />
+        @if (tocado.titulo && erros.titulo) {
+          <span class="mensagem-erro">{{ erros.titulo }}</span>
+        }
+      </div>
+
+      <!-- Linha com Data e Local -->
+      <div class="linha-dupla">
+        <!-- 2. Data -->
+        <div class="campo-grupo">
+          <label for="data">Data</label>
+          <input
+            type="date"
+            id="data"
+            name="data"
+            [(ngModel)]="evento.data"
+            (blur)="aoSairCampo('data')"
+            (ngModelChange)="aoAlterarCampo('data')"
+            [class.invalido]="tocado.data && !!erros.data"
+          />
+          @if (tocado.data && erros.data) {
+            <span class="mensagem-erro">{{ erros.data }}</span>
+          }
+        </div>
+
+        <!-- 3. Local -->
+        <div class="campo-grupo">
+          <label for="local">Local</label>
+          <select
+            id="local"
+            name="local"
+            [(ngModel)]="evento.local"
+            (blur)="aoSairCampo('local')"
+            (ngModelChange)="aoAlterarCampo('local')"
+            [class.invalido]="tocado.local && !!erros.local"
+          >
+            <option value="" disabled selected>Selecione o local...</option>
+            @for (opc of locaisDisponiveis; track opc) {
+              <option [value]="opc">{{ opc }}</option>
+            }
+          </select>
+          @if (tocado.local && erros.local) {
+            <span class="mensagem-erro">{{ erros.local }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- Linha com E-mail do responsável e Vagas -->
+      <div class="linha-dupla">
+        <!-- 4. E-mail do responsável -->
+        <div class="campo-grupo">
+          <label for="emailResponsavel">E-mail do responsável</label>
+          <input
+            type="email"
+            id="emailResponsavel"
+            name="emailResponsavel"
+            [(ngModel)]="evento.emailResponsavel"
+            (blur)="aoSairCampo('emailResponsavel')"
+            (ngModelChange)="aoAlterarCampo('emailResponsavel')"
+            [class.invalido]="tocado.emailResponsavel && !!erros.emailResponsavel"
+            placeholder="exemplo@unijorge.edu.br"
+            autocomplete="email"
+          />
+          @if (tocado.emailResponsavel && erros.emailResponsavel) {
+            <span class="mensagem-erro">{{ erros.emailResponsavel }}</span>
+          }
+        </div>
+
+        <!-- 5. Vagas -->
+        <div class="campo-grupo">
+          <label for="vagas">Vagas</label>
+          <input
+            type="number"
+            id="vagas"
+            name="vagas"
+            [(ngModel)]="evento.vagas"
+            (blur)="aoSairCampo('vagas')"
+            (ngModelChange)="aoAlterarCampo('vagas')"
+            [class.invalido]="tocado.vagas && !!erros.vagas"
+            min="1"
+            max="200"
+            placeholder="Ex: 50"
+          />
+          @if (tocado.vagas && erros.vagas) {
+            <span class="mensagem-erro">{{ erros.vagas }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- Ações do formulário -->
+      <div class="acoes-formulario">
+        <button
+          type="button"
+          class="botao-limpar"
+          (click)="limparFormulario()"
+        >
+          Limpar
+        </button>
+
+        <button
+          type="submit"
+          class="botao-salvar"
+          [disabled]="!formularioValido()"
+        >
+          Salvar
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Lista de eventos cadastrados -->
+  <section class="secao-lista">
+    <div class="cabecalho-lista">
+      <h2>Eventos Cadastrados</h2>
+      <span class="contador-badge">{{ eventos.length }}</span>
+    </div>
+
+    <div class="grade-eventos">
+      @for (item of eventos; track item.id) {
+        <article class="cartao-evento">
+          <div class="topo-cartao">
+            <span class="badge-id">ID #{{ item.id }}</span>
+            <span class="badge-local">{{ item.local }}</span>
+          </div>
+
+          <h3 class="titulo-evento">{{ item.titulo }}</h3>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-rotulo">Data:</span>
+              <span class="info-valor">{{ item.data }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-rotulo">Vagas:</span>
+              <span class="info-valor">{{ item.vagas }}</span>
+            </div>
+            <div class="info-item info-larga">
+              <span class="info-rotulo">Responsável:</span>
+              <span class="info-valor">{{ item.emailResponsavel }}</span>
+            </div>
+          </div>
+        </article>
+      } @empty {
+        <div class="lista-vazia">
+          <div class="icone-vazio">📅</div>
+          <p class="titulo-vazio">Nenhum evento cadastrado ainda</p>
+          <p class="subtitulo-vazio">Preencha o formulário acima e clique em "Salvar" para registrar o primeiro evento.</p>
+        </div>
+      }
+    </div>
+  </section>
+</div>
+
